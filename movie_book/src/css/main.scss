@@ -1,0 +1,36 @@
+
+
+/* pseudo elemvent and elements should also have this set *::after,::before */
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  /*outline:  1px dashed #32a1ce;*/
+  /* default box-sizing is not inherit, but here it's inherit */
+}
+
+html {
+  /* this defines what 1rem is */
+  font-size: 100%;
+  /*from this all rem size-s are multiply 62.5% -
+   means 10px for default browser: 16px; 100% means 16px, 
+   20px means that 1rem is 20px*/
+  /* //font-size: 25px; */
+}
+
+body {
+  /*padding don't take inheritance*/
+  box-sizing: border-box;
+  /*no boxing this means that width and height are width the padding and border, real width is width inside withoud padding and border*/
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+}
+
+@import url('./colors.scss');
+@import url('./components/scrollbar.scss');

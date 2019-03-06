@@ -1,0 +1,52 @@
+/*
+ *  STYLE 4
+ */
+
+ .scrollbar {
+   /*
+  scrollbar-width: thin;*/
+ }
+ .scrollbar::-webkit-scrollbar-track
+ {
+  opacity: 0.2;
+  
+  border-radius: 5px;
+
+ }
+ 
+ .scrollbar::-webkit-scrollbar
+ {
+   width: 10px;
+ }
+ 
+ .scrollbar::-webkit-scrollbar-thumb
+ {
+  background: #3939397d; 
+  border-radius: 5px;
+ }
+
+.scrollbar-x {
+  /*
+  scrollbar-width: thin;*/
+}
+
+
+ .scrollbar-x::-webkit-scrollbar-track
+ {
+  opacity: 0.2;
+  
+  border-radius: 5px;
+
+ }
+ 
+ .scrollbar-x::-webkit-scrollbar
+ {
+   width: 5px;
+   height: 10px;
+ }
+ 
+ .scrollbar-x::-webkit-scrollbar-thumb
+ {
+  background: #3939397d; 
+  border-radius: 5px;
+ }
