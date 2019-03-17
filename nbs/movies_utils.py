@@ -5,7 +5,7 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 
-path = Path('./data') # data are not in the github folder
+path = Path('../../moviebook_data') # data are not in the github folder
 small_path = path/'movies_small'
 latest_path = path/'movies_latest'
 
@@ -80,6 +80,29 @@ from imdb import IMDb
 ia = IMDb()
 n = 0
 
+def _try_get_value(m,val):
+    try:
+        return m[val]
+    except Exception as e:
+        print("[E] " + str(m) + ": " + str(e)[:20])
+        return '' 
+
+def _try_get_url(m):
+    try:
+        return ia.get_imdbURL(m)
+    except Exception as e:
+        print("[E] " + str(m) + ": " + str(e)[:20])
+        return '' 
+        
+    
+def _try_get_name(m,val):
+    try:
+        d =  m[val]
+        return m[val][0]['name']
+    except Exception as e:
+        print("[E] " + str(m) + ": " + str(e)[:20])
+        return ''     
+ 
 def get_cover_url(imdbId):  
     global n
     movie = ''
@@ -89,11 +112,63 @@ def get_cover_url(imdbId):
         n += 1
         return movie['full-size cover url']
     except Exception as e:
-        print(str(imdbId) + ': ' + str(movie) + ": " + str(e))
+        print(str(imdbId) + ': ' + str(movie) + ": " + str(e)[:20])
         return ''
+    
+def set_movie_info(df):
+    #df['full-title'] = df['title']
+    #print(df)
+    for index,row in tqdm(df.iterrows(),total=len(df)):
+        try:
+            movie = ia.get_movie(str(df.loc[index,'imdbId']))
+            df.loc[index,'full-title'] = _try_get_value(movie,'long imdb title')    
+            df.loc[index,'title'] = _try_get_value(movie,'title')
+            df.loc[index,'year'] = (_try_get_value(movie,'year'))
+            df.loc[index,'director'] = str(_try_get_name(movie,'director'))
+            df.loc[index,'producer'] = str(_try_get_name(movie,'production companies'))
+            df.loc[index,'cover'] = _try_get_value(movie,'full-size cover url')
+            df.loc[index,'small-cover'] = _try_get_value(movie,'cover url')
+            df.loc[index,'plot'] = str(_try_get_value(movie,'plot outline'))
+            df.loc[index,'length'] = str(_try_get_value(movie,'runtimes'))
+            df.loc[index,'rating'] = str(_try_get_value(movie,'rating'))
+            df.loc[index,'imdb_url'] = str(_try_get_url(movie))
+            
+            df.to_csv('temp_movies.csv')
+        except Exception as e:
+            print(str(index) + ': ' + str(movie) + ": " + str(e)[:20])
+    return df     
 
+def set_movie_rating(df):
+    for index,row in tqdm(df.iterrows(),total=len(df)):
+        try:
+            movie = ia.get_movie(str(df.loc[index,'imdbId']))
+            df.loc[index,'rating'] = str(_try_get_value(movie,'rating'))
+            df.to_csv('temp_movies.csv')
+        except Exception as e:
+            print(str(index) + ': ' + str(movie) + ": " + str(e)[:20])
+    return df      
+    
 #def get_cover_urls(mv):
 #    return mv['movieId'].map(get_cover_url)
+# to generate the input
+def generate_input():
+    dfm = pd.read_csv('../data/movies_alldata.csv')
+    dfy = pd.read_csv('../data/ml-youtube.csv')
+    #dfg = pd.read_csv('../data/movies.csv')
+    
+    o = dfm.merge(dfy,on='movieId') #.merge(dfg,on='movieId')
+    o['genres'] = o['genres'].str.replace('|',',')
+    o['length'] = o['length'].str.replace('[','').str.replace('\'','').str.replace(']','')
+#     o['imdb_url'] = o['imdbId'].map(lambda x: 'http://www.imdb.com/title/tt0' + str(x) + '/');
+    o['title'] = o['title_x']
+    o[o['cover'].isnull()!=True][[
+        'movieId','imdbId','tmdbId','genres','cover','title',
+        'full-title','year','director','producer',
+        'imdb_url',  'rating',
+        'small-cover','plot','length','youtubeId']].to_csv('../data/movie_input.csv',index=False)
+    print('saved to movie_input.csv')
+    print('this fields are not exported',)
+    return o[o['cover'].isnull()]
 
 def img_show(url):
     import matplotlib.pyplot as plt 

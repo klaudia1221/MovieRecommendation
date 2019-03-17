@@ -1,0 +1,163 @@
+//Colours
+$green: #2ecc71;
+$red: #e74c3c;
+$blue: #3498db;
+$yellow: #f1c40f;
+$purple: #8e44ad;
+$turquoise: #1abc9c;
+$base-color: #1F2041;
+
+$scale: 0.96;
+$scale2: 1.06;
+
+@mixin btn {
+  box-sizing: border-box;
+  appearance: none;
+  background-color: transparent;
+
+
+  border-radius: 22px;
+  // color: $color-white;
+  cursor: pointer;
+  // display: flex;
+  // align-self: center;
+  text-align: center; 
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  // margin: 20px;
+  padding: 0.5rem .8rem;
+  margin-right: 0.5rem;
+  // margin-left: 5px;
+  text-decoration: none;
+  text-align: center;
+  // text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+
+  /// Remove blue highligh on click
+  -webkit-tap-highlight-color: transparent;
+  -moz-tap-highlight-color: transparent;
+  -o-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  outline: none;
+
+  &:hover {
+    color: #fff;
+    outline: 0;
+  }
+  
+  &:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    transform: scaleX($scale2) scaleY($scale2);// top: -10px;
+
+    .favorite {
+      opacity: 0.7 !important;
+    }
+  }
+  &:active {
+    transform: scaleX($scale) scaleY($scale);
+  }
+
+  // .fa,.far {
+  //   // margin-right: 5px;
+  //   // margin-top: -1px;
+  // }
+
+}
+
+
+// Basic Button Style
+.btn {
+  @include btn();
+
+}
+
+.btn-yellow {
+  box-shadow: 0px 0px 2px #d8ab00;
+  background-color: #f1c40f;
+}
+
+.btn-round {
+  @include btn();
+  display: inline-block;
+  border-radius: 100%;
+  width: 1.6rem;
+  height: 1.6rem;
+
+
+  
+  
+  // box-shadow: 0px 0px 2px #d8ab00;
+  // padding: 0.5em 0.6em;
+  cursor: pointer;
+  color: white;
+
+  display: inline-block;
+  border-radius: 60px;
+  padding: 0;
+  vertical-align: middle;
+  // box-shadow: 0px 0px 2px #d8ab00;
+  // padding: 0.5em 0.6em;
+  cursor: pointer;
+  // background-color: #f1c40f;
+  color: white;
+  // margin-top: -70px;
+  // margin-right: -30px;
+  // margin-left: auto;
+  // right: 5px;
+  // bottom: -10px;
+  // position: absolute;
+  // outline: none;
+  z-index: 201;
+  font-size: 0.8rem;
+
+  .fa, .far {
+    font-size: 0.5rem;
+    padding: 0;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+
+  &:hover {
+    
+    // transform: scaleX(1.3) scaleY(1.3);
+
+  }
+
+  &:active {
+ 
+    // transform: scaleX(0.9) scaleY(0.9);
+  }
+}
+
+.btn-back {
+  background-color: $color-white;
+  color: rgba( $color-text2,0.9);
+
+
+  &:hover {
+    color:  $color-text2;
+    outline: 0;
+  }
+}
+
+// BUTTON 4
+.fourth {
+  // background: $yellow;
+  border-color: $base-color;
+
+   color: $base-color;
+
+  background: {
+    image: linear-gradient(45deg,$base-color 50%, transparent 50%);
+    position: 100%;
+    size: 400%;
+  }
+  transition: background 300ms ease-in-out;
+  
+  &:hover {
+    background-position: 0;
+  }
+}

@@ -32,5 +32,14 @@ body, html {
   height: 100%;
 }
 
-@import url('./colors.scss');
-@import url('./components/scrollbar.scss');
+button {
+  border-width: 0;
+}
+
+@import './colors.scss';
+@import './animate.scss'; /* from  https://daneden.github.io/animate.css/ */
+@import './buttons.scss'; /* from  https://daneden.github.io/animate.css/ */
+@import './components/scrollbar.scss';
+@import './components/ratings.scss';
+
+@import './components/loading.scss';

@@ -1,0 +1,15 @@
+.rating {
+  font-size: 1.2rem;
+  background-color: $color-amber;// rgb(245, 197, 24); 
+  color: white;
+  border-radius: 50%;
+
+  line-height: 42px;
+  height: 42px;
+  width: 42px;
+  vertical-align: middle;
+  text-align: center;
+
+  display: inline-block;;
+  z-index: 100;
+}

@@ -25,6 +25,31 @@
   border-radius: 5px;
  }
 
+ .scrollbar2::-webkit-scrollbar-track
+ {
+  opacity: 0.2;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+ }
+ 
+ .scrollbar2::-webkit-scrollbar
+ {
+   width: 10px;
+   
+  border-top-right-radius: 5px;
+  
+  border-bottom-right-radius: 5px;
+ }
+ 
+ .scrollbar2::-webkit-scrollbar-thumb
+ {
+  background: #3939397d; 
+  
+  border-top-right-radius: 5px;
+  
+  border-bottom-right-radius: 5px;
+ }
+
 .scrollbar-x {
   /*
   scrollbar-width: thin;*/
