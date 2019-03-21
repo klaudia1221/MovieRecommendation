@@ -148,30 +148,10 @@ def set_movie_rating(df):
             print(str(index) + ': ' + str(movie) + ": " + str(e)[:20])
     return df      
     
-#def get_cover_urls(mv):
-#    return mv['movieId'].map(get_cover_url)
-# to generate the input
-def generate_input():
-    dfm = pd.read_csv('../data/movies_alldata.csv')
-    dfy = pd.read_csv('../data/ml-youtube.csv')
-    #dfg = pd.read_csv('../data/movies.csv')
-    
-    o = dfm.merge(dfy,on='movieId') #.merge(dfg,on='movieId')
-    o['genres'] = o['genres'].str.replace('|',',')
-    o['length'] = o['length'].str.replace('[','').str.replace('\'','').str.replace(']','')
-#     o['imdb_url'] = o['imdbId'].map(lambda x: 'http://www.imdb.com/title/tt0' + str(x) + '/');
-    o['title'] = o['title_x']
-    o[o['cover'].isnull()!=True][[
-        'movieId','imdbId','tmdbId','genres','cover','title',
-        'full-title','year','director','producer',
-        'imdb_url',  'rating',
-        'small-cover','plot','length','youtubeId']].to_csv('../data/movie_input.csv',index=False)
-    print('saved to movie_input.csv')
-    print('this fields are not exported',)
-    return o[o['cover'].isnull()]
 
 def img_show(url):
     import matplotlib.pyplot as plt 
     from PIL import Image
     from urllib.request import urlopen
     plt.imshow(Image.open(urlopen(url)))
+
