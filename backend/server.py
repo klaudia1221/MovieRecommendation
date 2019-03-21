@@ -2,7 +2,7 @@ import movies_server as ms
 
 # Standard import libraries
 from starlette.applications import Starlette
-from starlette.responses import PlainTextResponse
+from starlette.responses import PlainTextResponse, JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
 import base64

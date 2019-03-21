@@ -87,7 +87,7 @@
 import Vue from "vue";
 import MovieDetails from "./MovieDetails.vue";
 
-const URL = "http://localhost:8001/";
+const URL = "https://klemenko.pl:8005/";
 const URL_COLD = URL + "movies_cold";
 const URL_GET = URL + "movies_get"; //<- get next movie from the PCA
 const URL_REC = URL + "movies_cold"; //<- get movies recommendations
