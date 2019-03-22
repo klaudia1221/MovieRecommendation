@@ -89,8 +89,8 @@
 import Vue from "vue";
 import MovieDetails from "./MovieDetails.vue";
 
-// const URL = "https://klemenko.pl:8005/";
-const URL = "http://localhost:8005/";
+const URL = "https://klemenko.pl:8005/";
+// const URL = "http://localhost:8005/";
 
 const MIN_REQUIRED = 20;
 const URL_COLD = URL + "movies_cold";
