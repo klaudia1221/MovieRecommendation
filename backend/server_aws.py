@@ -46,7 +46,7 @@ async def movies_get(request):  # we move selected values
 if __name__ == '__main__':
     uvicorn.run(app,
                 host='0.0.0.0',
-                # ssl_version=ssl.PROTOCOL_SSLv23,
-                # ssl_keyfile="./key.key",        # Note that the generated certificates
-                # ssl_certfile="./cert.crt",      # are used here
-                port=8001)
+                ssl_version=ssl.PROTOCOL_SSLv23,
+                ssl_keyfile="/home/ubuntu/ai/key.key",        # Note that the generated certificates
+                ssl_certfile="/home/ubuntu/ai/cert.crt",      # are used here
+                port=8005)
