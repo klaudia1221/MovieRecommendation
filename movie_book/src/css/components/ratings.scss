@@ -1,6 +1,6 @@
 .rating {
   font-size: 1.2rem;
-  background-color: $color-amber;// rgb(245, 197, 24); 
+  background-color: $color-deep-orange;;// rgb(245, 197, 24); 
   color: white;
   border-radius: 50%;
 
@@ -12,4 +12,24 @@
 
   display: inline-block;;
   z-index: 100;
+}
+
+.rating-small {
+  font-size: 12px;
+  background-color: $color-deep-orange;// rgb(245, 197, 24); 
+  color: white;
+  border-radius: 50%;
+  // margin: 2px;
+  float: left;
+
+
+  line-height: 24px;
+  height: 24px;
+  width: 24px;
+  vertical-align: middle;
+  text-align: center;
+
+  display: inline-block;;
+  z-index: 100;
+
 }

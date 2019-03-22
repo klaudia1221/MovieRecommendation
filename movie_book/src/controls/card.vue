@@ -20,7 +20,8 @@ h2 {
   padding: 0px;
   margin: 0px;
 
-  margin-top: 0.5rem;
+  // margin-top: 0.5rem;
+  padding-top: 1.5rem;
 
   overflow: visible;
 
@@ -63,6 +64,7 @@ h2 {
     margin: 0;
     margin-right: 0;
     margin-left: 0;
+    position: relative;
 
     // width: 180px;
     // height: 280px
@@ -70,6 +72,40 @@ h2 {
     // &.isLoading {
     //   background: red;
     // }
+
+    .user-popover {
+        position: absolute !important;
+        width: 180px;
+        padding: 5px;
+        
+//  width: 0;
+//       height: 0;
+      // bottom: -50px;
+      // left: 22px;
+top: -15px;
+      left: 25px;
+
+      display: inline-block;
+      // border-top: 6px solid lighten(#1BA39C, 80%);
+      // border-right: 6px solid transparent;
+      // border-bottom: 6px solid transparent;
+      // border-left: 6px solid transparent;      
+      // content: "";
+      // opacity: 1.0;
+      // transition: .3s;
+      font-size: 12px;
+
+        // color: black;
+        border: 1px solid #42b983;
+background: #57606f;
+        border-radius: 5px;
+        // background: white;
+        // padding: 10px 20px;
+        // box-shadow: 0 6px 6px rgba(16, 16, 16, 0.04), 0 6px 6px rgba(0, 0, 0, 0.05);
+        z-index: 93999;
+
+    
+    }
   }
 
   .card {
@@ -337,7 +373,20 @@ h2 {
 </style>
 
 <template>
-  <div class="item">
+  <div class="item"
+
+  v-on:mouseover="hover" v-on:mouseout="hoverOut"
+  >
+
+      <div class="user-popover" 
+     v-if="showPopup"
+      transition="fade" 
+      v-on:mouseover="hoverInfo" 
+      v-on:mouseout="hoverOutInfo">
+      <span class="rating-small">{{value.rating}}</span>
+{{value.plot.substring(0,100)}}...
+      </div>
+
     <a
       :href="link"
       class="noDecoration"
@@ -442,15 +491,24 @@ function isMobileDevice() {
 }
 
 export default {
+  data() {
+    return {
+      /** POPUP DATA */
+			showPopup: false,
+			timer: '',
+			isInInfo: false
+    }
+
+  },
   props: [
     "value",
-    "title",
+    // "title",
     "islist",
-    "year",
-    "badge",
-    "description",
-    "lang",
-    "img",
+    // "year",
+    // "badge",
+    // "description",
+    // "lang",
+    // "img",
     "link"
   ],
   computed: {
@@ -471,6 +529,48 @@ export default {
       // console.log(val);
       this.value.rate = val;
       this.$emit("rate", this.value);
+    },
+
+    /** POPUP METHODS */
+    hover: function()
+    {
+      let vm = this;
+      this.timer = setTimeout(function() {
+        vm.showPopover();
+      }, 300);
+    },
+
+    hoverOut: function()
+    {
+      let vm = this;
+      clearTimeout(vm.timer);
+      this.timer = setTimeout(function() {
+        if(!vm.isInInfo)
+        {
+          vm.closePopover();
+        }
+      }, 200);
+    },
+
+    hoverInfo: function()
+    {
+      this.isInInfo = true;
+    },
+    
+    hoverOutInfo: function()
+    {
+      this.isInInfo = false;
+      this.hoverOut();
+    },
+
+    showPopover: function()
+    {
+      this.showPopup = true;
+    },
+
+    closePopover: function()
+    {
+      this.showPopup = false;
     }
   }
 };

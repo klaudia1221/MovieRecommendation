@@ -1,5 +1,5 @@
 <template>
-  <div id="body">
+  <div id="body" class="body">
     <!-- <div class="details "> -->
     <MovieDetails
       v-if="is_details"
@@ -11,8 +11,12 @@
     />
 
     <div class="header">
-      <h1>Movies recommendation <i class="fas fa-video"></i>
-      </h1>
+      <span class="left">
+        <button title="Books recommendation" class="btn btn-over" @click="$router.push('books')"><i class="fas fa-book"></i></button>
+        <button title="About" class="btn btn-over" @click="$router.push('about')"><i class="far fa-address-card"></i></button>
+      </span>
+
+      <h1 class="header-title">{{$data.path}} Movies recommendation</h1>
     </div>
 
     <div
@@ -36,10 +40,8 @@
       >
         <card
           v-for="m in fav"
-          :key="m.id"
+          :key="m.movie_ix"
           :value="m"
-          :title="m.title"
-          :year="m.year"
           :islist="false"
           :description="m.year"
           :img="m.img"
@@ -49,8 +51,8 @@
       </div>
     </div>
 
-    <h2 class="title recommendation" ><button :disabled="rates.length<20" @click="recommendation_get" class="btn btn-back"><i class="fas fa-trophy"></i>  Find Recommendations 
-   <span v-if="rates.length<20">(required another {{20-rates.length}} rates)</span> :</button>
+    <h2 class="title recommendation" ><button :disabled="!is_minimum" @click="recommendation_get" class="btn btn-back"><i class="fas fa-trophy"></i>  Find Recommendations 
+   <span v-if="!is_minimum">(required another {{MIN_REQUIRED-rates.length}} rates)</span> :</button>
 </h2>
 
     <div
@@ -61,7 +63,7 @@
     
       <div
         v-for="m in movies"
-        :key="m.movieId"
+        :key="m.movie_ix"
         class="animated bounceIn"
       >
         <!-- <transition name="fade"> -->
@@ -87,10 +89,13 @@
 import Vue from "vue";
 import MovieDetails from "./MovieDetails.vue";
 
-const URL = "https://klemenko.pl:8005/";
+// const URL = "https://klemenko.pl:8005/";
+const URL = "http://localhost:8005/";
+
+const MIN_REQUIRED = 20;
 const URL_COLD = URL + "movies_cold";
-const URL_GET = URL + "movies_get"; //<- get next movie from the PCA
-const URL_REC = URL + "movies_cold"; //<- get movies recommendations
+const URL_REPLACE = URL + "movies_replace"; //<- get next movie from the PCA
+const URL_GET = URL + "movies_get"; //<- get movies recommendations
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -104,6 +109,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      MIN_REQUIRED: MIN_REQUIRED, //<- minimum number of recommendation
       detail_item: "",
       is_details: false, //<- is show details full screen
       fav_visible: true,
@@ -113,6 +119,11 @@ export default {
       fav: [],        //lista użytkownika który dodał do
       rates: [] // to co wybrał użytkownik (wysyłane do recommendation)
     };
+  },
+  computed: {
+    is_minimum() {
+      return this.rates.length >= this.MIN_REQUIRED;
+    }
   },
   components: {
     MovieDetails
@@ -151,7 +162,7 @@ export default {
 
       //we need to go the movies
       var request = new XMLHttpRequest();
-      request.open("POST", URL_GET, true);
+      request.open("POST", URL_REPLACE, true);
       request.onload = function() {
         // Begin accessing JSON data here
         // console.log(this.response);
@@ -195,7 +206,7 @@ export default {
 
       // based on the rates we return list of movies
       var request = new XMLHttpRequest();
-      request.open("POST", URL_REC, true);
+      request.open("POST", URL_GET, true);
       request.onload = function() {
         // Begin accessing JSON data here
         // console.log(this.response);
@@ -205,16 +216,20 @@ export default {
 
         // console.log(data);
         for (var m of data) {
+          console.log(m.movie_ix, m.title)
           m.is_loading = false;
           m.is_fav = false;
           v.movies.push(m);
         }
+        // console.log(data)
       };
       request.onerror = function() {
         console.warn("Some error", request.status);
       };
       // Send request
-      request.send(JSON.stringify(await this._get_rates_movies()));
+      request.send(JSON.stringify(
+        [await this._get_rates_movies(),
+        await this._get_to_watch_movies()]));
     },
 
     get_cold_movie() {
@@ -245,21 +260,21 @@ export default {
         // function get_movies(movies, is_fav = false) {
         var data = [];
         for (var m of this.movies) {
-             data.push([m.movieId, m.rate]);
+             data.push(m.movie_ix);
         }        
         for (var m of this.rates) {
          if(data.indexOf(m<0)) {
-             data.push([m.movieId, m.rate]);
+             data.push(m.movie_ix);
           }
         }
         for (var m of this.not_seen) {
           if(data.indexOf(m<0)) {
-             data.push([m.movieId, m.rate]);
+             data.push(m.movie_ix);
           }
         }
         for (var m of this.fav) {
           if(data.indexOf(m<0)) {
-             data.push([m.movieId, m.rate]);
+             data.push(m.movie_ix);
           }
         }
         console.log(data);
@@ -271,10 +286,19 @@ export default {
         // function get_movies(movies, is_fav = false) {
         var data = [];
         for (var m of this.rates) {
-          data.push([m.movieId, m.rate]);
+          data.push([m.movie_ix, m.rate]);
         }
         return data;
     },    
+
+    // get movies that are to watch
+    async _get_to_watch_movies() {
+        var data = [];
+        for (var m of this.fav) {
+          data.push(m.movie_ix);
+        }
+        return data;
+    }
 
   }
 };
@@ -374,6 +398,22 @@ a {
 
   .header {
     width: 100%;
+
+    display: flex;
+
+    .left {
+      display: inline;
+      margin-right: 2rem;
+    }
+
+      h2 {
+        display: inline;
+      }
+
+      .header-title {
+        color: rgba($color-white,0.9);
+      }
+
   }
 
   .title {

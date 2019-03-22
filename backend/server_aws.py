@@ -35,12 +35,20 @@ async def movies_cold(request):
         ms.get_movies_cold().to_json(orient='records'))
 
 
+@app.route("/movies_replace", methods=["POST"])
+async def movies_get(request):  # we move selected values
+    data = await request.json()
+    print(type(data), data)  # list of watched movies, all
+    return PlainTextResponse(
+        ms.get_movie_replace(data).to_json(orient='records'))
+
+
 @app.route("/movies_get", methods=["POST"])
 async def movies_get(request):  # we move selected values
     data = await request.json()
     print(type(data), data)
     return PlainTextResponse(
-        ms.get_movies_recommendations(data).to_json(orient='records'))
+        ms.get_movies_recommendations(data[0], data[1]).to_json(orient='records'))
 
 # main function, run server as uvicorn
 if __name__ == '__main__':

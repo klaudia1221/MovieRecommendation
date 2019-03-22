@@ -3,13 +3,15 @@
     <!-- <div id="particles-js"></div> -->
 
     <div id="border">
-      <div class="background">
+      <div class="background" :class="[background_class]" >
         <div class="filter"></div>
       </div>
     </div>
 
-   <movies class="body"/>
 
+
+   <!-- <movies class="body"/> -->
+   <router-view></router-view>
   </div>
 </template>
 
@@ -19,6 +21,9 @@ import Card from './controls/card'
 import Rating from './controls/rating'
 import StarRating from './controls/star-rating'
 import Vue from 'vue';
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
 
 Vue.component('card', Card);
 Vue.component('rating', Rating);
@@ -26,9 +31,24 @@ Vue.component('star-rating', StarRating);
 
 export default {
   name: 'app',
+  data() {
+    return {
+      background_class: 'home'
+    }
+  },
   components: {
     Movies
-  }
+  },
+  mounted() {
+    this.background_class = this.$router.currentRoute.name;
+  },
+  watch:{
+    $route (to, from){
+      this.background_class = this.$router.currentRoute.name;
+      // console.log('change');
+        // this.show = false;
+    }
+  } 
 }
 </script>
 
@@ -84,7 +104,7 @@ export default {
   overflow: hidden;
   margin: 0;
   // padding: 5px;
-  background-image: url("~/img/movies.jpg");
+  // background-image: url("~/img/movies.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -92,6 +112,24 @@ export default {
     // -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   // filter: sepia(100%);
   // filter: grayscale(100%);
+
+  &.home {
+    background-image: url("~/img/movies.jpg");
+  }
+
+  &.movies {
+    background-image: url("~/img/movies.jpg");
+  }
+
+  &.books {
+    background-image: url("~/img/books.jpg");
+  }
+
+  
+  &.about {
+    background-image: url("~/img/about.jpg");
+  }
+ 
  
 
  .filter {
