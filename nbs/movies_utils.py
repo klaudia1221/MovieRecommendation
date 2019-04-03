@@ -5,6 +5,8 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 
+
+
 # DEPRECATED
 path = Path('../../moviebook_data') # data are not in the github folder
 small_path = path/'movies_small'
