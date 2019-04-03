@@ -16,7 +16,7 @@ const routes = [
 ]
 
 export default new VueRouter({
-  mode: 'history',
+  mode: process.env.CORDOVA_PLATFORM ? 'hash' : 'history',
   routes // short for `routes: routes`
 })
 

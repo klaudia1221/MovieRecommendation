@@ -5,6 +5,7 @@ from tqdm import tqdm
 import numpy as np
 import pandas as pd
 
+# DEPRECATED
 path = Path('../../moviebook_data') # data are not in the github folder
 small_path = path/'movies_small'
 latest_path = path/'movies_latest'
@@ -18,12 +19,14 @@ small_movies = small_path/'movies.csv'
 latest_ratings = latest_path/'ratings.csv'
 latest_movies = small_path/'movies.csv'
 
+# DEPRECATED
 def _prepare_path():
     Path(path).mkdir(exist_ok=True)
     Path(small_path).mkdir(exist_ok=True)
     Path(latest_path).mkdir(exist_ok=True)
 _prepare_path(); # prepare pathes for python 
 
+# DEPRECATED
 def _move_subfiles(path):
     import os, shutil, glob
     # move all files to main folder
@@ -34,7 +37,8 @@ def _move_subfiles(path):
             for file in glob.iglob(path_str, recursive=True):
                 shutil.copy(file, small_path)
                 print(file)
-    
+
+# DEPRECATED
 def _downlad_unzip(path,url):
     import requests
     import zipfile
@@ -57,18 +61,19 @@ def _downlad_unzip(path,url):
         zip_ref.extractall(path)
     _move_subfiles(path)
 
-    
+# DEPRECATED
 # Download all ratings from the webpage
 # source: movie1k-lens
 def small_download():
     _downlad_unzip(small_path,small_url)
     return small_path
 
+# DEPRECATED
 def latest_download():
     _downlad_unzip(latest_path,latest_url)
     return latest_path
 
-
+# DEPRECATED
 def get_movies(path_data):
     m = pd.read_csv(path_data/'movies.csv')
     l = pd.read_csv(path_data/'links.csv')
@@ -76,6 +81,7 @@ def get_movies(path_data):
     df['cover'] = ''
     return df
 
+# PART TO USE
 from imdb import IMDb
 ia = IMDb()
 n = 0
